@@ -1,0 +1,73 @@
+.navbarButton {
+  width: 57px;
+  height: 57px;
+  border-radius: 12px;
+  border: none;
+  background-color: var(--primary-background);
+  color: var(--primary-text);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  transition: all 0.2s ease;
+  position: relative;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  overflow: visible;
+  padding: 0 2px;
+}
+
+.navbarButton:hover {
+  background-color: var(--discord-hover);
+  border-radius: 16px;
+  transform: scale(1.05);
+}
+
+.navbarButton.active {
+  background-color: var(--discord-primary);
+  border-radius: 16px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.text {
+  font-size: 12px;
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.navbarButton::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 0;
+  background-color: var(--primary-text);
+  border-radius: 0 2px 2px 0;
+  transition: height 0.2s ease;
+  z-index: 1;
+}
+
+.navbarButton:hover.channel::before {
+  height: 18px;
+  left: -7px;
+}
+
+.navbarButton.active.channel::before {
+  height: 18px;
+}
