@@ -3,7 +3,7 @@
   height: 57px;
   border-radius: 12px;
   border: none;
-  background-color: var(--primary-background);
+  background-color: var(--light-background);
   color: var(--primary-text);
   cursor: pointer;
   display: flex;

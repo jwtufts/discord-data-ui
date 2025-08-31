@@ -1,7 +1,7 @@
 .navbar {
   height: 100%;
   width: 75px;
-  background-color: var(--secondary-background);
+  background-color: var(--dark-background);
   padding: 8px 0;
 }
 

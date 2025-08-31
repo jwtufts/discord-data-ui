@@ -1,0 +1,9 @@
+.page {
+  height: 100%;
+  display: flex;
+  background-color: var(--light-background);
+}
+
+.navWrapper {
+  height: 100%;
+}
