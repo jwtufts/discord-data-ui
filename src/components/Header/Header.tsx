@@ -1,5 +1,6 @@
 import styles from './Header.module.css';
 import { useUserGuildData } from '../../hooks/useUserGuildData';
+import { useHasRole } from '../../hooks/useHasRole';
 
 interface HeaderProps {
   title?: string;
@@ -7,7 +8,8 @@ interface HeaderProps {
 
 export const Header = ({ title = "Dashboard" }: HeaderProps) => {
   const { data: userGuildMember, isLoading, error } = useUserGuildData();
-  console.log(userGuildMember);
+  const { data: isAdmin } = useHasRole('hoes mad');
+  console.log(isAdmin);
   return (
     <header className={styles.header}>
       <h1 className={styles.title}>{title}</h1>

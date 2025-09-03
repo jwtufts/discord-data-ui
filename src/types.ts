@@ -34,7 +34,7 @@ export type UserGuildMember = {
   user?: DiscordUser | null;
   nick?: string | null;
   avatar?: string | null;
-  roles?: DiscordRole[] | null;
+  roles?: string[] | null;
   joined_at?: string | null;
   premium_since?: string | null;
 }
