@@ -3,7 +3,7 @@ import { API_BASE_URL } from '../config/api';
 import { useAuthStore } from '../store/useAuthStore';
 
 const fetchHasRole = async (roleName: string): Promise<boolean> => {
-  const response = await fetch(`${API_BASE_URL}/me/has-role?roleName=${encodeURIComponent(roleName)}`, {
+  const response = await fetch(`${API_BASE_URL}/api/v1/me/has-role?roleName=${encodeURIComponent(roleName)}`, {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',

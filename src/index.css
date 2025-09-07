@@ -24,6 +24,7 @@
 html {
   height: 100%;
   width: 100%;
+  letter-spacing: 1px;
 }
 
 body {
@@ -34,4 +35,19 @@ body {
 #root {
   height: 100%;
   width: 100%;
+}
+
+.mantine-Popover-dropdown {
+  background-color: var(--dark-background);
+  border: 1px solid var(--border-color);
+  color: var(--primary-text);
+}
+
+.mantine-Select-option {
+  font-size: 12px;
+  padding: 2px 5px;
+
+  &:hover {
+    background-color: var(--discord-hover);
+  }
 }

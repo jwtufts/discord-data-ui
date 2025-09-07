@@ -38,3 +38,11 @@ export type UserGuildMember = {
   joined_at?: string | null;
   premium_since?: string | null;
 }
+
+export type Author = {
+  nickName?: string;
+  globalName?: string;
+  avatar?: string;
+  userName?: string;
+  userId?: string;
+}

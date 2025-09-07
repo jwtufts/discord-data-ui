@@ -1,0 +1,15 @@
+.dropdownWrapper {
+  input {
+    min-height: 26px;
+    height: 26px;
+    background-color: var(--dark-background);
+    border: 1px solid var(--border-color);
+    color: var(--primary-text);
+    font-size: 12px;
+
+    &:placeholder-shown {
+      letter-spacing: 1px;
+      font-size: 12px;
+    }
+  }
+}

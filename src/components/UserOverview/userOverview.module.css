@@ -1,0 +1,22 @@
+.userSelectorWrapper {
+  height: 50px;
+  background-color: var(--middle-background);
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--primary-text);
+  padding-left: 8px;
+  gap: 6px;
+  border-top: 1px solid var(--dark-background);
+}
+
+.userDataWrapper {
+  padding: 8px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
