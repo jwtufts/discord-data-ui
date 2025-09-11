@@ -3,6 +3,7 @@ import { Actions, AddIcon, BorderNode, DockLocation, Layout, Model, TabNode, Tab
 import { parentLayoutJson } from './constants';
 import styles from './main.module.css';
 import { UserOverview } from '../UserOverview/UserOverview';
+import { UserStoreProvider } from '../../store/useUserOverviewContext';
 
 export const Main = () => {
   const layoutRef = useRef<Layout>(null);
@@ -15,7 +16,9 @@ export const Main = () => {
     if (component === 'userOverview') {
       return (
         <div className={styles.contentWrapper}>
-          <UserOverview />
+          <UserStoreProvider initialUser={null}>
+            <UserOverview />
+          </UserStoreProvider>
         </div>
       );
     }

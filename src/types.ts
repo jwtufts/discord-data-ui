@@ -46,3 +46,15 @@ export type Author = {
   userName?: string;
   userId?: string;
 }
+
+export type Message = {
+  id: string;
+  channelId?: string | null;
+  content?: string | null;
+  messageId?: string | null;
+  author?: Author | null;
+  bot?: boolean | null;
+  createdAt?: string | null;
+  edited?: boolean | null;
+  deleted?: boolean | null;
+}

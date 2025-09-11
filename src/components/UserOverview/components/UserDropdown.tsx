@@ -15,21 +15,27 @@ export const UserDropdown = () => {
   const { data: allActiveUsers } = useAllActiveUsers();
   const { selectedUser, setSelectedUser } = useUserOverviewStore((state) => ({ selectedUser: state.selectedUser, setSelectedUser: state.setSelectedUser }));
 
-  const allUserNames: string[] = useMemo(() => {
-    return allActiveUsers ? allActiveUsers
-      .map((user: Author) => user.globalName ?? user.userName)
-      .filter((name) => name !== undefined) : [];
-  }, [allActiveUsers]);
-
-  const dropdownData: string[] = useMemo(() => {
-    if (isLoading || error) return noUsers;
+  const dropdownData = useMemo(() => {
+    if (isLoading || error) {
+      return [{ value: 'none', label: 'No Users Available' }];
+    }
 
     if (isAdmin) {
-      return allUserNames ?? noUsers;
-    } else {
-      return userGuildMember?.nick ? [userGuildMember.nick] : noUsers;
+      return allActiveUsers?.map((user: Author) => ({
+        value: user.userId ?? '',
+        label: user.globalName ?? user.userName ?? "Unknown",
+      })) ?? [{ value: 'none', label: 'No Users Available' }];
     }
-  }, [allUserNames, error, isAdmin, isLoading, userGuildMember?.nick]);
+
+    if (userGuildMember?.user?.id) {
+      return [{
+        value: userGuildMember.user.id,
+        label: userGuildMember.nick ?? userGuildMember.user.global_name ?? userGuildMember.user.username ?? "Unknown",
+      }];
+    }
+
+    return [{ value: 'none', label: 'No Users Available' }];
+  }, [allActiveUsers, error, isAdmin, isLoading, userGuildMember]);
 
   const onUserSelect = useCallback((value: string | null) => {
     setSelectedUser(value);
@@ -40,8 +46,9 @@ export const UserDropdown = () => {
       <Select
         placeholder="Select a user"
         data={dropdownData}
-        value={selectedUser}
+        value={selectedUser ?? null}
         onChange={onUserSelect}
+        disabled={isLoading || !!error}
       />
     </div>
   );

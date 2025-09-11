@@ -13,7 +13,9 @@
     "@mantine/core": "^8.2.8",
     "@tabler/icons-react": "^3.34.1",
     "@tanstack/react-query": "^5.85.6",
+    "@types/luxon": "^3.7.1",
     "flexlayout-react": "^0.8.17",
+    "luxon": "^3.7.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "zustand": "^5.0.8"
