@@ -1,6 +1,12 @@
 import { getCSSVar } from "../../utils/getCSSVar";
 
-export const getChartOptions = (data: number[][], title: string, yAxisTitle: string): Highcharts.Options => {
+export interface SeriesConfig {
+  name: string;
+  data: number[][];
+  color?: string;
+}
+
+export const getChartOptions = (seriesConfigs: SeriesConfig[], title: string, yAxisTitle: string): Highcharts.Options => {
   return (
     {
       chart: {
@@ -28,19 +34,17 @@ export const getChartOptions = (data: number[][], title: string, yAxisTitle: str
           }
         },
       },
-      series: [
-        {
-          type: 'line',
-          name: 'Messages',
-          data: data,
-          color: getCSSVar('--discord-primary'),
-        },
-      ],
+      series: seriesConfigs.map(cfg => ({
+        type: 'line',
+        name: cfg.name,
+        data: cfg.data,
+        color: cfg.color || getCSSVar('--discord-primary'),
+      })),
       tooltip: {
         xDateFormat: '%Y-%m-%d',
         shared: true,
       },
-      legend: { enabled: false },
+      legend: { enabled: true, itemStyle: { color: getCSSVar('--primary-text') }, itemHoverStyle: { color: getCSSVar('--discord-hover') } },
     }
   )
 }

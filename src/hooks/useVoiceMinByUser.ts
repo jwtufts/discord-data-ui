@@ -4,7 +4,7 @@ import { API_BASE_URL } from '../config/api';
 const fetchVoiceMin = async (userId: string | null, from: string, to: string): Promise<number> => {
   if (!userId) return 0;
 
-  const response = await fetch(`${API_BASE_URL}/api/v1/voice/minutes/byUserId?userId=${encodeURIComponent(userId)}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`, {
+  const response = await fetch(`${API_BASE_URL}/api/v1/exp/minutes/byUserId?userId=${encodeURIComponent(userId)}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`, {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',

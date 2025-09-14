@@ -13,6 +13,8 @@ import HighchartsReact from 'highcharts-react-official';
 import { getChartOptions } from './getChartOptions'
 import { useVoiceExpEvents } from '../../hooks/useVoiceExpEvents'
 import { groupVoiceTimeByDay } from '../../utils/groupVoiceTimeByDay'
+import { groupExpByDay } from '../../utils/groupExpByDay'
+import { getCSSVar } from '../../utils/getCSSVar'
 
 export const UserOverview = () => {
   const startWeek = DateTime.now().startOf('week').startOf('day').toISO();
@@ -25,13 +27,37 @@ export const UserOverview = () => {
   const { data: voiceMinMonthly } = useVoiceMinByUser(selectedUser, startMonth, DateTime.now().toISO())
   const { data: userRank } = useUserRank(selectedUser);
   const { data: allMessages } = useMessagesByUser(selectedUser, null, DateTime.now().toISO());
-  const { data: voiceExpEvents } = useVoiceExpEvents(selectedUser, null, DateTime.now().toISO());
+  const { data: expEvents } = useVoiceExpEvents(selectedUser, null, null, DateTime.now().toISO());
 
-  const dailySeries = groupMessagesByDay(allMessages);
+  const voiceExpEvents = expEvents?.filter((expEvent) => expEvent.reason === "voice");
+
+  const dailyMessages = groupMessagesByDay(allMessages);
   const dailyVoice = groupVoiceTimeByDay(voiceExpEvents);
+  const dailyExp = groupExpByDay(expEvents, false);
+  const dailyUnboostedExp = groupExpByDay(expEvents, true);
 
-  const messageChartOptions: Highcharts.Options = getChartOptions(dailySeries, 'Messages Over Time', 'Messages');
-  const voiceChartOptions: Highcharts.Options = getChartOptions(dailyVoice, 'Hours in Voice Over Time', 'Hours in Voice');
+  const messageChartOptions: Highcharts.Options = getChartOptions([{
+    name: "Messages",
+    data: dailyMessages,
+    color: getCSSVar('--discord-primary')
+  }], 'Messages Over Time', 'Messages');
+  const voiceChartOptions: Highcharts.Options = getChartOptions([{
+    name: "Time in Voice",
+    data: dailyVoice,
+    color: getCSSVar('--discord-primary')
+  }], 'Hours in Voice Over Time', 'Hours in Voice');
+  const expChartOptions: Highcharts.Options = getChartOptions([
+    {
+      name: "XP",
+      data: dailyExp,
+      color: getCSSVar('--discord-primary'),
+    },
+    {
+      name: "Unboosted XP",
+      data: dailyUnboostedExp,
+      color: getCSSVar('--secondary-color'),
+    },
+  ], 'XP per Day', 'XP Gained');
 
   return (
     <div>
@@ -59,6 +85,9 @@ export const UserOverview = () => {
         </div>
         <div style={{ marginTop: '2rem' }}>
           <HighchartsReact highcharts={Highcharts} options={voiceChartOptions} />
+        </div>
+        <div style={{ marginTop: '2rem' }}>
+          <HighchartsReact highcharts={Highcharts} options={expChartOptions} />
         </div>
       </div>
     </div>
