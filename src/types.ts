@@ -58,3 +58,26 @@ export type Message = {
   edited?: boolean | null;
   deleted?: boolean | null;
 }
+
+export type RankByUserExp = {
+  daily?: number | null,
+  weekly?: number | null,
+  monthly?: number | null,
+  yearly?: number | null,
+  total?: number | null,
+  unboosted?: number | null
+};
+
+export type ExpEvent = {
+  id?: string | null;
+  userId?: string | null;
+  exp?: number | null;
+  unboosted?: number | null;
+  timestamp?: string | null;
+  reason?: string | null;
+  eligibleUsers?: number | null;
+  timeInVoice?: number | null;
+  channelId?: string | null;
+  messageId?: string | null;
+};
+

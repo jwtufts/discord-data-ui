@@ -5,10 +5,33 @@ import { DataCard } from './components/DataCard'
 import { useMessagesByUser } from '../../hooks/useMessagesByUser'
 import { useUserOverviewStore } from '../../hooks/useUserOverviewStore'
 import { DateTime } from 'luxon';
+import { useVoiceMinByUser } from '../../hooks/useVoiceMinByUser'
+import { useUserRank } from '../../hooks/useUserRank'
+import { groupMessagesByDay } from '../../utils/groupMessagesByDay'
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
+import { getChartOptions } from './getChartOptions'
+import { useVoiceExpEvents } from '../../hooks/useVoiceExpEvents'
+import { groupVoiceTimeByDay } from '../../utils/groupVoiceTimeByDay'
 
 export const UserOverview = () => {
+  const startWeek = DateTime.now().startOf('week').startOf('day').toISO();
+  const startMonth = DateTime.now().startOf('month').startOf('day').toISO();
+
   const { selectedUser } = useUserOverviewStore((state) => ({ selectedUser: state.selectedUser }));
-  const { data: weeklyMessages } = useMessagesByUser(selectedUser, DateTime.now().startOf('week').startOf('day').toISO(), DateTime.now().toISO())
+  const { data: weeklyMessages } = useMessagesByUser(selectedUser, startWeek, DateTime.now().toISO())
+  const { data: monthlyMessages } = useMessagesByUser(selectedUser, startMonth, DateTime.now().toISO())
+  const { data: voiceMinWeekly } = useVoiceMinByUser(selectedUser, startWeek, DateTime.now().toISO())
+  const { data: voiceMinMonthly } = useVoiceMinByUser(selectedUser, startMonth, DateTime.now().toISO())
+  const { data: userRank } = useUserRank(selectedUser);
+  const { data: allMessages } = useMessagesByUser(selectedUser, null, DateTime.now().toISO());
+  const { data: voiceExpEvents } = useVoiceExpEvents(selectedUser, null, DateTime.now().toISO());
+
+  const dailySeries = groupMessagesByDay(allMessages);
+  const dailyVoice = groupVoiceTimeByDay(voiceExpEvents);
+
+  const messageChartOptions: Highcharts.Options = getChartOptions(dailySeries, 'Messages Over Time', 'Messages');
+  const voiceChartOptions: Highcharts.Options = getChartOptions(dailyVoice, 'Hours in Voice Over Time', 'Hours in Voice');
 
   return (
     <div>
@@ -19,13 +42,23 @@ export const UserOverview = () => {
       <div className={styles.userDataWrapper}>
         <div className={styles.dataCards}>
           <DataCard title="Messages this Week" data={weeklyMessages?.length ?? ''} />
-          <DataCard title="Voice Min this Week" data={5} />
-          <DataCard title="Messages this Month" data={5} />
-          <DataCard title="Voice Min this Month" data={5} />
-          <DataCard title="Current Rank" data={5} />
-          <DataCard title="Weekly Rank" data={2} />
-          <DataCard title="Monthly Rank" data={8} />
-          <DataCard title="Yearly Rank" data={11} />
+          <DataCard title="Voice Hours this Week" data={voiceMinWeekly != null
+            ? (voiceMinWeekly / 60).toFixed(2)
+            : ''} />
+          <DataCard title="Messages this Month" data={monthlyMessages?.length ?? ''} />
+          <DataCard title="Voice Hours this Month" data={voiceMinMonthly != null
+            ? (voiceMinMonthly / 60).toFixed(2)
+            : ''} />
+          <DataCard title="Current Rank" data={userRank?.total ?? ''} />
+          <DataCard title="Weekly Rank" data={userRank?.weekly ?? ''} />
+          <DataCard title="Monthly Rank" data={userRank?.monthly ?? ''} />
+          <DataCard title="Yearly Rank" data={userRank?.yearly ?? ''} />
+        </div>
+        <div style={{ marginTop: '2rem' }}>
+          <HighchartsReact highcharts={Highcharts} options={messageChartOptions} />
+        </div>
+        <div style={{ marginTop: '2rem' }}>
+          <HighchartsReact highcharts={Highcharts} options={voiceChartOptions} />
         </div>
       </div>
     </div>
