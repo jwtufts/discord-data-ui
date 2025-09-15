@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { type ComponentType } from 'react';
 import styles from './Button.module.css';
+import type { IconProps } from '@tabler/icons-react';
 
 interface ButtonProps {
-  text: string;
+  text?: string;
+  icon?: ComponentType<IconProps>;
   onClick?: () => void;
   onHover?: () => void;
   onMouseLeave?: () => void;
   isActive?: boolean;
-  icon?: React.ReactNode;
   isChannel?: boolean;
 }
 
@@ -17,7 +18,7 @@ export const Button = ({
   onHover,
   onMouseLeave,
   isActive = false,
-  icon,
+  icon: Icon,
   isChannel = true,
 }: ButtonProps) => {
   return (
@@ -28,7 +29,11 @@ export const Button = ({
       onMouseLeave={onMouseLeave}
       title={text}
     >
-      {icon && <div className={styles.icon}>{icon}</div>}
+      {Icon && (
+        <div className={styles.icon}>
+          <Icon size={18} stroke={1.5} />
+        </div>
+      )}
       <span className={styles.text}>{text}</span>
     </button>
   );

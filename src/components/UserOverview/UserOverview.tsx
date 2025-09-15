@@ -15,8 +15,13 @@ import { useVoiceExpEvents } from '../../hooks/useVoiceExpEvents'
 import { groupVoiceTimeByDay } from '../../utils/groupVoiceTimeByDay'
 import { groupExpByDay } from '../../utils/groupExpByDay'
 import { getCSSVar } from '../../utils/getCSSVar'
+import type { TabNode } from 'flexlayout-react'
 
-export const UserOverview = () => {
+interface UserOverviewProps {
+  node: TabNode;
+}
+
+export const UserOverview = ({ node }: UserOverviewProps) => {
   const startWeek = DateTime.now().startOf('week').startOf('day').toISO();
   const startMonth = DateTime.now().startOf('month').startOf('day').toISO();
 
@@ -63,7 +68,7 @@ export const UserOverview = () => {
     <div>
       <div className={styles.userSelectorWrapper}>
         <span className={styles.title}><IconUser size={14} /><span>User: </span></span>
-        <UserDropdown />
+        <UserDropdown node={node} />
       </div>
       <div className={styles.userDataWrapper}>
         <div className={styles.dataCards}>

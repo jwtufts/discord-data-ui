@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "./components/Button";
 import { AuthButton } from "./components/AuthButton";
 import styles from "./navbar.module.css";
+import { IconHome } from "@tabler/icons-react";
 
 export const NavBar = () => {
   const [activeTab, setActiveTab] = useState<string>("Home");
@@ -16,8 +17,7 @@ export const NavBar = () => {
         <AuthButton />
       </div>
       <div className={styles.tabButtons}>
-        <Button text="Home" isActive={activeTab === "Home"} onClick={() => onTabClick("Home")} isChannel={true} />
-        <Button text="Admin" isActive={activeTab === "Admin"} onClick={() => onTabClick("Admin")} />
+        <Button icon={IconHome} isActive={activeTab === "Home"} onClick={() => onTabClick("Home")} isChannel={true} />
       </div>
     </div>
   );

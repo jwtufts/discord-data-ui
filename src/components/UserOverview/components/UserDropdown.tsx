@@ -6,10 +6,15 @@ import { useCallback, useMemo } from 'react';
 import { useAllActiveUsers } from '../../../hooks/useAllActiveUsers';
 import { useUserOverviewStore } from '../../../hooks/useUserOverviewStore';
 import type { Author } from '../../../types';
+import { Actions, type TabNode } from 'flexlayout-react';
 
-const noUsers = ["No Users Available"];
+const noUsers = "No Users Available";
 
-export const UserDropdown = () => {
+interface UserDropdownProps {
+  node?: TabNode;
+}
+
+export const UserDropdown = ({ node }: UserDropdownProps) => {
   const { data: userGuildMember, isLoading, error } = useUserGuildData();
   const { data: isAdmin } = useHasRole('hoes mad');
   const { data: allActiveUsers } = useAllActiveUsers();
@@ -17,14 +22,14 @@ export const UserDropdown = () => {
 
   const dropdownData = useMemo(() => {
     if (isLoading || error) {
-      return [{ value: 'none', label: 'No Users Available' }];
+      return [{ value: 'none', label: noUsers }];
     }
 
     if (isAdmin) {
       return allActiveUsers?.map((user: Author) => ({
         value: user.userId ?? '',
         label: user.globalName ?? user.userName ?? "Unknown",
-      })) ?? [{ value: 'none', label: 'No Users Available' }];
+      })) ?? [{ value: 'none', label: noUsers }];
     }
 
     if (userGuildMember?.user?.id) {
@@ -34,12 +39,18 @@ export const UserDropdown = () => {
       }];
     }
 
-    return [{ value: 'none', label: 'No Users Available' }];
+    return [{ value: 'none', label: noUsers }];
   }, [allActiveUsers, error, isAdmin, isLoading, userGuildMember]);
 
   const onUserSelect = useCallback((value: string | null) => {
     setSelectedUser(value);
-  }, [setSelectedUser]);
+    const name = allActiveUsers?.filter((author) => author.userId === value).map((author) => author.nickName ?? author.globalName ?? author.userName)[0] ?? "Unknown User";
+    if (node) {
+      node.getModel().doAction(
+        Actions.renameTab(node.getId(), name)
+      );
+    }
+  }, [allActiveUsers, node, setSelectedUser]);
 
   return (
     <div className={styles.dropdownWrapper}>

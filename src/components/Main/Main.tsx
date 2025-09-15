@@ -17,7 +17,7 @@ export const Main = () => {
       return (
         <div className={styles.contentWrapper}>
           <UserStoreProvider initialUser={null}>
-            <UserOverview />
+            <UserOverview node={node} />
           </UserStoreProvider>
         </div>
       );
